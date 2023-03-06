@@ -70,7 +70,18 @@ Command.join = async function (args, message) {
   });
   connection.on(VoiceConnectionStatus.Signalling, (oldState, newState) => {
     console.log("Connection is in the Signalling state!");
-    connection.rejoin()
+  });
+  connection.on('stateChange', (oldState, newState) => {
+    console.log("Connection is stateChange!");
+    const oldNetworking = Reflect.get(oldState, 'networking');
+    const newNetworking = Reflect.get(newState, 'networking');
+    const networkStateChangeHandler = (oldNetworkState, newNetworkState) => {
+      const newUdp = Reflect.get(newNetworkState, 'udp');
+      clearInterval(newUdp?.keepAliveInterval);
+    }
+  
+    oldNetworking?.off('stateChange', networkStateChangeHandler);
+    newNetworking?.on('stateChange', networkStateChangeHandler);
   });
 
   const query = args.join(" ");
@@ -126,11 +137,6 @@ Command.join = async function (args, message) {
     console.log("Audio player is in the Idle state!");
     destroy();
     play();
-  });
-  audioPlayer.on("stateChange", (oldState, newState) => {
-    console.log(
-      `Audio player transitioned from ${oldState.status} to ${newState.status}`
-    );
   });
 
   play();

@@ -17,15 +17,15 @@ spec:
         app.kubernetes.io/name: playtodied-bot
         app.kubernetes.io/instance: playtodied-bot
     spec:
-      affinity:
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-            - matchExpressions:
-              - key: node.kubernetes.io/instance-type
-                operator: In
-                values:
-                - vhp-2c-2gb-amd  
+      # affinity:
+      #   nodeAffinity:
+      #     requiredDuringSchedulingIgnoredDuringExecution:
+      #       nodeSelectorTerms:
+      #       - matchExpressions:
+      #         - key: node.kubernetes.io/instance-type
+      #           operator: In
+      #           values:
+      #           - vhp-2c-2gb-amd  
       imagePullSecrets:
         - name: dockersecret      
       serviceAccountName: playtodied-bot
