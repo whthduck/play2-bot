@@ -59,13 +59,33 @@ Command.join = async function (args, message) {
   connection.on(VoiceConnectionStatus.Ready, (oldState, newState) => {
     console.log("Connection is in the Ready state!");
   });
+  connection.on(VoiceConnectionStatus.Destroyed, (oldState, newState) => {
+    console.log("Connection is in the Destroyed state!");
+  });
+  connection.on(VoiceConnectionStatus.Disconnected, (oldState, newState) => {
+    console.log("Connection is in the Disconnected state!");
+  });
+  connection.on(VoiceConnectionStatus.Connecting, (oldState, newState) => {
+    console.log("Connection is in the Connecting state!");
+  });
+  connection.on(VoiceConnectionStatus.Signalling, (oldState, newState) => {
+    console.log("Connection is in the Signalling state!");
+    connection.rejoin()
+  });
 
   const query = args.join(" ");
-  const ytInfo = await Yt.info(query);
-  if (!ytInfo.video_details?.title)
+  try {
+    const ytInfo = await Yt.info(query);
+    if (!ytInfo.video_details?.title)
+      return message.reply(
+        "Your video link is not supported\nOnly support Youtube Video Url"
+      );
+  } catch (e) {
+    console.error(e);
     return message.reply(
       "Your video link is not supported\nOnly support Youtube Video Url"
     );
+  }
 
   let audioPlayer = createAudioPlayer({
     behaviors: { noSubscriber: NoSubscriberBehavior.Play },
@@ -94,6 +114,12 @@ Command.join = async function (args, message) {
     );
   });
   audioPlayer.on(AudioPlayerStatus.Playing, (oldState, newState) => {
+    console.log("Audio player is in the Playing state!");
+  });
+  audioPlayer.on(AudioPlayerStatus.Paused, (oldState, newState) => {
+    console.log("Audio player is in the Playing state!");
+  });
+  audioPlayer.on(AudioPlayerStatus.AutoPaused, (oldState, newState) => {
     console.log("Audio player is in the Playing state!");
   });
   audioPlayer.on(AudioPlayerStatus.Idle, (oldState, newState) => {
@@ -177,27 +203,23 @@ Command.help = async function (args, message) {
       "Bot by ivan nguyeexn#6885",
       "https://cdn.discordapp.com/app-icons/1079812652471156737/208dba48245536390bdc778c3f00daf0.png?size=512"
     )
-    .setDescription(
-      "I will join your server and play a song"
-    )
-    .setThumbnail(
-      "https://media.giphy.com/media/LzinRMeoxdpAt6w2n7/giphy.gif"
-    )
+    .setDescription("I will join your server and play a song")
+    .setThumbnail("https://media.giphy.com/media/LzinRMeoxdpAt6w2n7/giphy.gif")
     .addFields(
       {
-        name: "- $poi help",
+        name: `- ${configs.prefix} help`,
         value: "This command...",
       },
       {
-        name: "- $poi join",
+        name: `- ${configs.prefix} join`,
         value: "Joins the voice channel you are in",
       },
       {
-        name: "- $poi leave",
+        name: `- ${configs.prefix} leave`,
         value: "Leaves the voice channel incase needed!",
       },
       {
-        name: "- $poi ban <tag user>",
+        name: `- ${configs.prefix} ban <tag user>`,
         value:
           "Bans the user while music is playing! Will DM the user that he has been banned.",
       }
