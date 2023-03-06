@@ -1,6 +1,6 @@
 {
   "name": "@whthduck/playtodied-bot",
-  "version": "1.0.1",
+  "version": "0.0.1",
   "description": "Joins voice channels and all that stuff",
   "main": "main.js",
   "dependencies": {

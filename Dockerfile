@@ -12,4 +12,4 @@ WORKDIR /usr/src/app
 COPY --from=runner /usr/src/app/node_modules node_modules
 COPY . .
 USER 1
-CMD ["node", "server.js"]
+CMD ["yarn", "prod"]

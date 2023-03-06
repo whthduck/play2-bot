@@ -1,0 +1,60 @@
+name: Node.js Package
+on:
+  push:
+    branches:
+      - main
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    if: "startsWith(github.event.head_commit.message, 'release:')"
+    permissions: 
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 2
+
+      - name: "Set version"
+        id: version
+        uses: salsify/action-detect-and-tag-new-version@v2
+        with:
+          create-tag: false
+
+      - name: Apply new version
+        uses: actions-hub/kubectl@v1.24.0
+        env:
+          KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
+        with:
+          args: set image deployment/playtodied-bot server=whthduck/playtodied-bot:${{ steps.version.outputs.current-version }}
+
+  k8s:
+    runs-on: ubuntu-latest
+    if: "startsWith(github.event.head_commit.message, 'k8s:')"
+    permissions: 
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 2
+          
+      - name: "Set version"
+        id: version
+        uses: salsify/action-detect-and-tag-new-version@v2
+        with:
+          create-tag: false
+
+      - name: Apply all manifest
+        uses: actions-hub/kubectl@v1.24.0
+        env:
+          KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
+        with:
+          args: apply -n whthduck -f ./k8s
+
+      - name: Apply new version
+        uses: actions-hub/kubectl@v1.24.0
+        env:
+          KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
+        with:
+          args: set image deployment/playtodied-bot server=whthduck/playtodied-bot:${{ steps.version.outputs.current-version }}

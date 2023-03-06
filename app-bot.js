@@ -11,7 +11,6 @@ const Yt = require("./yt");
 const {
   createAudioPlayer,
   createAudioResource,
-  demuxProbe,
   NoSubscriberBehavior,
   getVoiceConnection,
   joinVoiceChannel,
@@ -19,7 +18,7 @@ const {
   VoiceConnectionStatus,
 } = require("@discordjs/voice");
 require("console-stamp")(console, "HH:MM:ss.l");
-const configs = require("./config.json");
+const configs = require("./config");
 const client = new Client({
   intents: [
     GatewayIntentBits.Guilds,
