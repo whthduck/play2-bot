@@ -52,8 +52,8 @@ jobs:
         with:
           args: apply -n whthduck -f ./k8s
 
-      - name: Sleep for 10 seconds
-        run: sleep 10s
+      - name: Sleep for 3 seconds
+        run: sleep 3s
         shell: bash
 
       - name: Apply new version

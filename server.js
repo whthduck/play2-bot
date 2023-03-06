@@ -2,14 +2,15 @@ const express = require("express");
 const Appbot = require("./app-bot");
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT
+const host = process.env.HOST
 
 app.get("/", (req, res) => {
   res.send("sucess");
 });
 
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`);
+app.listen(port, host,() => {
+  console.log(`App listening on port ${port}`);
   try {
     Appbot.start();
   } catch (e) {
