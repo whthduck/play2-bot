@@ -26,7 +26,7 @@ jobs:
         env:
           KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
         with:
-          args: set image deployment/playtodied-bot app=whthduck/playtodied-bot:${{ steps.version.outputs.current-version }}
+          args: set image -n whthduck deployment/playtodied-bot app=whthduck/playtodied-bot:${{ steps.version.outputs.current-version }}
 
   k8s:
     runs-on: ubuntu-latest
@@ -61,4 +61,4 @@ jobs:
         env:
           KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
         with:
-          args: set image deployment/playtodied-bot app=whthduck/playtodied-bot:${{ steps.version.outputs.current-version }}
+          args: set image -n whthduck deployment/playtodied-bot app=whthduck/playtodied-bot:${{ steps.version.outputs.current-version }}
