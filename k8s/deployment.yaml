@@ -23,7 +23,7 @@ spec:
       securityContext:
         {}
       containers:
-        - name: web
+        - name: app
           securityContext:
             {}
           image: "whthduck/playtodied-bot:latest"

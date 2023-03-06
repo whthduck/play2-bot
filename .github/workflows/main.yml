@@ -26,7 +26,7 @@ jobs:
         env:
           KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
         with:
-          args: set image deployment/playtodied-bot server=whthduck/playtodied-bot:${{ steps.version.outputs.current-version }}
+          args: set image deployment/playtodied-bot app=whthduck/playtodied-bot:${{ steps.version.outputs.current-version }}
 
   k8s:
     runs-on: ubuntu-latest
@@ -52,9 +52,13 @@ jobs:
         with:
           args: apply -n whthduck -f ./k8s
 
+      # - name: Sleep for 10 seconds
+      #   run: sleep 10s
+      #   shell: bash
+
       - name: Apply new version
         uses: actions-hub/kubectl@v1.24.0
         env:
           KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
         with:
-          args: set image deployment/playtodied-bot server=whthduck/playtodied-bot:${{ steps.version.outputs.current-version }}
+          args: set image deployment/playtodied-bot app=whthduck/playtodied-bot:${{ steps.version.outputs.current-version }}
