@@ -1,3 +1,3 @@
-# Hi, I am PlayToDied Discord Bot
+# Hi, I am Play2 Discord Bot
 
 
