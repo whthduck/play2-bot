@@ -1,21 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: playtodied-bot
+  name: play2-bot
   labels:
-    app.kubernetes.io/name: playtodied-bot
-    app.kubernetes.io/instance: playtodied-bot
+    app.kubernetes.io/name: play2-bot
+    app.kubernetes.io/instance: play2-bot
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app.kubernetes.io/name: playtodied-bot
-      app.kubernetes.io/instance: playtodied-bot
+      app.kubernetes.io/name: play2-bot
+      app.kubernetes.io/instance: play2-bot
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: playtodied-bot
-        app.kubernetes.io/instance: playtodied-bot
+        app.kubernetes.io/name: play2-bot
+        app.kubernetes.io/instance: play2-bot
     spec:
       # affinity:
       #   nodeAffinity:
@@ -28,29 +28,29 @@ spec:
       #           - vhp-2c-2gb-amd  
       imagePullSecrets:
         - name: dockersecret      
-      serviceAccountName: playtodied-bot
+      serviceAccountName: play2-bot
       securityContext:
         {}
       containers:
         - name: app
           securityContext:
             {}
-          image: "whthduck/playtodied-bot:latest"
+          image: "whthduck/play2-bot:latest"
           imagePullPolicy: Always
           env:         
           - name: APP_NAME
-            value: "playtodied-bot"    
+            value: "play2-bot"    
           - name: APP_SECRET
             value: "89116e9e-3f42-4b54-bd07-060b269fde2f"
           - name: HOST
             value: "0.0.0.0"
           - name: PORT
             value: "8080"
-          - name: PLAYTODIED_DISCORD_TOKEN
+          - name: PLAY2_DISCORD_TOKEN
             valueFrom: 
               secretKeyRef:
                 name: whthduck-creds
-                key: playtodied-discord-token
+                key: play2-discord-token
           ports:
           - containerPort: 8080
             name: http

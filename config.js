@@ -1,8 +1,8 @@
-const PLAYTODIED_DISCORD_TOKEN= process.env.PLAYTODIED_DISCORD_TOKEN || ""
-if (!PLAYTODIED_DISCORD_TOKEN)
-  throw new Error("Missing PLAYTODIED_DISCORD_TOKEN env");
+const PLAY2_DISCORD_TOKEN= process.env.PLAY2_DISCORD_TOKEN || ""
+if (!PLAY2_DISCORD_TOKEN)
+  throw new Error("Missing PLAY2_DISCORD_TOKEN env");
 module.exports = {
-  name: "Play to Died",
+  name: "Play2 Bot",
   prefix: "$p2 ",
-  token: PLAYTODIED_DISCORD_TOKEN,
+  token: PLAY2_DISCORD_TOKEN,
 };

@@ -55,28 +55,10 @@ Command.join = async function (args, message) {
     selfMute: false,
     selfDeaf: false,
   });
-  connection.on(Events.state, (oldState, newState) => {
+  connection.on(VoiceConnectionStatus.Connecting, (oldState, newState) => {
     console.log(
       `Connection transitioned from ${oldState?.status} to ${newState?.status}`
     );
-  });
-  // connection.on(VoiceConnectionStatus.Ready, (oldState, newState) => {
-  //   console.log("Connection is in the Ready state!");
-  // });
-  // connection.on(VoiceConnectionStatus.Destroyed, (oldState, newState) => {
-  //   console.log("Connection is in the Destroyed state!");
-  // });
-  // connection.on(VoiceConnectionStatus.Disconnected, (oldState, newState) => {
-  //   console.log("Connection is in the Disconnected state!");
-  // });
-  // connection.on(VoiceConnectionStatus.Connecting, (oldState, newState) => {
-  //   console.log("Connection is in the Connecting state!");
-  // });
-  // connection.on(VoiceConnectionStatus.Signalling, (oldState, newState) => {
-  //   console.log("Connection is in the Signalling state!");
-  // });
-  connection.on("stateChange", (oldState, newState) => {
-    console.log("Connection is stateChange!");
     const oldNetworking = Reflect.get(oldState, "networking");
     const newNetworking = Reflect.get(newState, "networking");
     const networkStateChangeHandler = (oldNetworkState, newNetworkState) => {
@@ -87,6 +69,7 @@ Command.join = async function (args, message) {
     oldNetworking?.off("stateChange", networkStateChangeHandler);
     newNetworking?.on("stateChange", networkStateChangeHandler);
   });
+
 
   if (message.member.voice.channel.type === ChannelType.GuildStageVoice) {
     console.log("Connection to a Stage Voice Channel");
@@ -108,10 +91,6 @@ Command.join = async function (args, message) {
     );
   }
 
-  let audioPlayer = createAudioPlayer({
-    behaviors: { noSubscriber: NoSubscriberBehavior.Play },
-  });
-
   let resource = null;
   let destroy = () => {};
   const play = async () => {
@@ -120,16 +99,18 @@ Command.join = async function (args, message) {
       inputType: stream.type,
       inlineVolume: true,
     });
-
     audioPlayer.play(resource);
+
     destroy = () => {
       resource.playStream.destroy();
-      stream.stream.destroy();
-      audioPlayer.stop(true);
+      Yt.destroy();
       audioPlayer.removeAllListeners();
     };
   };
 
+  let audioPlayer = createAudioPlayer({
+    behaviors: { noSubscriber: NoSubscriberBehavior.Play },
+  });
   audioPlayer.on("error", (error) => {
     console.error(
       "Error:",
@@ -141,18 +122,11 @@ Command.join = async function (args, message) {
   audioPlayer.on(AudioPlayerStatus.Playing, (oldState, newState) => {
     console.log("Audio player is in the Playing state!");
   });
-  // audioPlayer.on(AudioPlayerStatus.Paused, (oldState, newState) => {
-  //   console.log("Audio player is in the Playing state!");
-  // });
-  // audioPlayer.on(AudioPlayerStatus.AutoPaused, (oldState, newState) => {
-  //   console.log("Audio player is in the Playing state!");
-  // });
   audioPlayer.on(AudioPlayerStatus.Idle, (oldState, newState) => {
     console.log("Audio player is in the Idle state!");
     destroy();
     play();
   });
-
   play();
   connection.subscribe(audioPlayer);
 
@@ -165,11 +139,11 @@ Command.join = async function (args, message) {
   });
   let timeout = null;
   connection.receiver.speaking.on("end", (userId) => {
-    clearTimeout(timeout)
-    timeout = setTimeout(()=>{
+    clearTimeout(timeout);
+    timeout = setTimeout(() => {
       resource.volume?.setVolumeLogarithmic(0.5);
       speakingLatestAt = 0;
-    }, 5000)
+    }, 5000);
   });
 };
 

@@ -1,6 +1,6 @@
 {
   "name": "@whthduck/play2-bot",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Joins voice channels and all that stuff",
   "main": "main.js",
   "dependencies": {
@@ -16,8 +16,8 @@
     "nodemon": "^2.0.20"
   },
   "scripts": {
-    "image:podman": "podman build -t playtodied-bot . && podman push playtodied-bot whthduck/playtodied-bot:${npm_package_version}",
-    "image:docker": "docker build -t playtodied-bot . && docker push playtodied-bot whthduck/playtodied-bot:${npm_package_version}",
+    "image:podman": "podman build -t play2-bot . && podman push play2-bot whthduck/play2-bot:${npm_package_version}",
+    "image:docker": "docker build -t play2-bot . && docker push play2-bot whthduck/play2-bot:${npm_package_version}",
     "dev": "node server.js",
     "prod": "node server.js"
   },

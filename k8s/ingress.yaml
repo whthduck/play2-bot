@@ -1,10 +1,10 @@
 # apiVersion: networking.k8s.io/v1
 # kind: Ingress
 # metadata:
-#   name: playtodied-bot
+#   name: play2-bot
 #   labels:
-#     app.kubernetes.io/name: playtodied-bot
-#     app.kubernetes.io/instance: playtodied-bot
+#     app.kubernetes.io/name: play2-bot
+#     app.kubernetes.io/instance: play2-bot
 #   annotations:
 #     cert-manager.io/cluster-issuer: letsencrypt-prod
 #     external-dns.alpha.kubernetes.io/ttl: 5m
@@ -22,6 +22,6 @@
 #             pathType: Prefix
 #             backend:
 #               service:
-#                 name: playtodied-bot
+#                 name: play2-bot
 #                 port:
 #                   number: 8080

@@ -1,5 +1,5 @@
 const express = require("express");
-const Appbot = require("./app-bot");
+const Play2Bot = require("./play2-bot");
 
 const app = express();
 const port = process.env.PORT
@@ -12,7 +12,7 @@ app.get("/", (req, res) => {
 app.listen(port, host,() => {
   console.log(`App listening on port ${port}`);
   try {
-    Appbot.start();
+    Play2Bot.start();
   } catch (e) {
     console.error(e);
     process.exit(1);
