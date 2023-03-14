@@ -1,6 +1,7 @@
 .git
 node_modules
-
+*.lock
+.env
 
 # Logs
 # log
