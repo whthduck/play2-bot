@@ -20,4 +20,5 @@ WORKDIR /usr/src/app
 COPY --from=runner /usr/src/app/node_modules node_modules
 COPY --from=builder /usr/src/app/dist dist
 USER 1
+RUN ls -a
 CMD ["yarn", "prod"]
