@@ -54,7 +54,7 @@ spec:
           - name: REDIS_HOST
             value: redis-12374.c295.ap-southeast-1-1.ec2.cloud.redislabs.com
           - name: REDIS_PORT
-            value: 12374
+            value: "12374"
           - name: REDIS_USER
             value: default
           - name: REDIS_PASSWORD

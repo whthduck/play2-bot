@@ -5,7 +5,6 @@ import {
   NestFastifyApplication,
 } from '@nestjs/platform-fastify';
 import { AppModule } from './app.module';
-// import Play2Bot from './play2-bot';
 
 process.on('uncaughtException', function (err) {
   console.info('*** uncaughtException ***', err.message);
@@ -23,9 +22,7 @@ async function bootstrap() {
   );
   const configService = app.get(ConfigService);
   app.setGlobalPrefix(configService.get('app.base'));
-
-  // Play2Bot.start();
-
+  
   await app.listen(configService.get('app.port'));
 }
 bootstrap();
