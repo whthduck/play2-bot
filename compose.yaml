@@ -1,0 +1,15 @@
+version: "3"
+
+services:
+  play2-bot:
+    image: whthduck/play2-bot
+    command: "node dist/main"
+    ports:
+      - 3000:3000
+    environment: 
+      - PORT=3000
+      - PLAY2_DISCORD_TOKEN=MTA4MzAzMzA1NTkyMjQ5OTU4NA.G03Z0B.cBpR1TZ1prF0sq-CE8azCdS8ZgANle3BA64ULE
+      - REDIS_HOST=redis-12374.c295.ap-southeast-1-1.ec2.cloud.redislabs.com
+      - REDIS_PORT=12374
+      - REDIS_USER=default
+      - REDIS_PASSWORD=anactMPBlHcvx6dklUag96Ii14cY8SIp

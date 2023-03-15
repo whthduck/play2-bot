@@ -15,10 +15,10 @@ RUN yarn
 RUN yarn build
 
 # COPY FROM PREVIOUS STAGES  
-FROM runner
+FROM node:16-alpine
 WORKDIR /usr/src/app
 COPY --from=runner /usr/src/app/node_modules node_modules
 COPY --from=builder /usr/src/app/dist dist
 USER 1
 RUN ls -a
-CMD ["yarn", "prod"]
+CMD ["node", "dist/main"]
