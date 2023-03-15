@@ -69,13 +69,19 @@ spec:
           readinessProbe:
             failureThreshold: 10
             httpGet:
-              path: /
+              path: /ready
               port: http
-            periodSeconds: 10        
+            periodSeconds: 10
+          livenessProbe:
+            failureThreshold: 10
+            httpGet:
+              path: /live
+              port: http
+            periodSeconds: 10
           resources:
             limits:
               cpu: 100m
               memory: 256Mi
             requests:
               cpu: 10m
-              memory: 48Mi
+              memory: 100Mi
