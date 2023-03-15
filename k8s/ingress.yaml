@@ -1,27 +1,11 @@
-# apiVersion: networking.k8s.io/v1
-# kind: Ingress
-# metadata:
-#   name: play2-bot
-#   labels:
-#     app.kubernetes.io/name: play2-bot
-#     app.kubernetes.io/instance: play2-bot
-#   annotations:
-#     cert-manager.io/cluster-issuer: letsencrypt-prod
-#     external-dns.alpha.kubernetes.io/ttl: 5m
-#     kubernetes.io/ingress.class: nginx
-# spec:
-#   tls:
-#     - hosts:
-#         - "productive.workmind.app"
-#       secretName: productive-workmind-app-tls
-#   rules:
-#     - host: "productive.workmind.app"
-#       http:
-#         paths:
-#           - path: /
-#             pathType: Prefix
-#             backend:
-#               service:
-#                 name: play2-bot
-#                 port:
-#                   number: 8080
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: play2-bot
+  labels:
+    app.kubernetes.io/name: play2-bot
+    app.kubernetes.io/instance: play2-bot
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    external-dns.alpha.kubernetes.io/ttl: 5m
+    kubernetes.io/ingress.class: nginx
