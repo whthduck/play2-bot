@@ -63,8 +63,8 @@ spec:
                 name: whthduck-creds
                 key: redis-password
           ports:
-          - containerPort: 8080
-            name: http
+          - name: http
+            containerPort: 8080
             protocol: TCP  
           readinessProbe:
             failureThreshold: 10
