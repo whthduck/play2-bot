@@ -3,7 +3,7 @@ version: '3'
 services:
   play2-bot:
     image: whthduck/play2-bot
-    command: 'node dist/main'
+    command: 'yarn prod'
     ports:
       - 3000:3000
     env_file: './.env'

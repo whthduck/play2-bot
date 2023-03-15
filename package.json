@@ -1,6 +1,6 @@
 {
   "name": "@whthduck/play2-bot",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "Joins voice channels and all that stuff",
   "author": "whthduck",
   "private": true,

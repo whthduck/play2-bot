@@ -22,7 +22,10 @@ async function bootstrap() {
   );
   const configService = app.get(ConfigService);
   app.setGlobalPrefix(configService.get('app.base'));
-  
-  await app.listen(configService.get('app.port'));
+
+  await app.listen(
+    configService.get('app.port'),
+    configService.get('app.host'),
+  );
 }
 bootstrap();
