@@ -40,6 +40,8 @@
     "discord.js": "~14.8",
     "fastify": "~4.14",
     "libsodium-wrappers": "~0.7",
+    "nestjs-pino": "^3.1.2",
+    "pino-http": "^8.3.3",
     "play-dl": "~1.9",
     "reflect-metadata": "0.1.13",
     "rxjs": "7.2.0"
