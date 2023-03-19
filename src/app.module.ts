@@ -1,11 +1,13 @@
 import { BullModule } from '@nestjs/bull';
-import { Module } from '@nestjs/common';
+import { CacheModule, Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { redisStore } from 'cache-manager-ioredis-yet';
 import { LoggerModule } from 'nestjs-pino';
 import { AppController } from './app.controller';
 import { BotModule } from './bot/bot.module';
 import configs from './configs';
 import { EnvValidator } from './configs/enviroment';
+import { StoreModule } from './store/store.module';
 
 @Module({
   imports: [
@@ -20,14 +22,14 @@ import { EnvValidator } from './configs/enviroment';
       exclude: ['/live', '/ready'],
       pinoHttp: {
         timestamp: () => `,"time":"${new Date().toISOString()}"`,
-        messageKey: 'msg',
-      }
+      },
     }),
     BullModule.forRootAsync({
       imports: [ConfigModule],
-      inject: [ConfigService],
       useFactory: (configService: ConfigService) => configService.get('bull'),
+      inject: [ConfigService],
     }),
+    StoreModule,
     BotModule,
   ],
   controllers: [AppController],

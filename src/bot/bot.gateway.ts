@@ -1,26 +1,20 @@
-import {
-  PrefixCommandInterceptor,
-  PrefixCommandPipe,
-} from '@discord-nestjs/common';
+import { PrefixCommandInterceptor } from '@discord-nestjs/common';
 import {
   InjectDiscordClient,
   On,
   Once,
   MessageEvent,
-  Command,
-  UseGroup,
 } from '@discord-nestjs/core';
 import { Injectable, Logger, UseInterceptors } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { Client, ActivityType, Message, Events } from 'discord.js';
-import { JoinSubCommand } from './commands/join.sub-command';
+import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
 
 @Injectable()
 export class BotGateway {
-  private readonly logger = new Logger(BotGateway.name);
-
   constructor(
+    @InjectPinoLogger(BotGateway.name) private readonly logger: PinoLogger,
     @InjectDiscordClient() private readonly client: Client,
     private readonly configService: ConfigService,
     private eventEmitter: EventEmitter2,
@@ -28,11 +22,12 @@ export class BotGateway {
 
   @Once(Events.ClientReady)
   onReady() {
-    this.logger.log({ msg: `Bot ${this.client.user.tag} was started!` });
+    this.logger.info({ msg: `Bot ${this.client.user.tag} was started!` });
     this.client.user.setActivity({
       name: this.configService.get('discord.name'),
       type: ActivityType.Listening,
     });
+    this.eventEmitter.emit('rejoin');
   }
 
   @On(Events.MessageCreate)
@@ -47,7 +42,7 @@ export class BotGateway {
   async onMessage(@MessageEvent() message: Message) {
     const [subcommand, ...args] = message.content.split(/ +/);
 
-    this.logger.log({
+    this.logger.info({
       msg: `Command for ${subcommand} Recieved in Server: ${message.guild.name}`,
       channel: message.channelId,
       guildId: message.guildId,

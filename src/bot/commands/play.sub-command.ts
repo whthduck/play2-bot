@@ -1,21 +1,14 @@
 import { Handler, IA, On, SubCommand } from '@discord-nestjs/core';
-import {
-  ChannelType,
-  Guild,
-  If,
-  InternalDiscordGatewayAdapterCreator,
-  Message,
-  PermissionFlagsBits,
-  VoiceBasedChannel,
-} from 'discord.js';
+import { Message, PermissionFlagsBits } from 'discord.js';
 import { OnEvent } from '@nestjs/event-emitter';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
 import { PlayService } from '../play.service';
+import { getVoiceConnection } from '@discordjs/voice';
 
-@SubCommand({ name: 'join', description: 'join a channel' })
-export class JoinSubCommand {
+@SubCommand({ name: 'play', description: 'join a channel' })
+export class PlaySubCommand {
   constructor(
-    @InjectPinoLogger(JoinSubCommand.name) private readonly logger: PinoLogger,
+    @InjectPinoLogger(PlaySubCommand.name) private readonly logger: PinoLogger,
     private readonly playService: PlayService,
   ) {}
 
@@ -24,7 +17,7 @@ export class JoinSubCommand {
     return `Success register user:`;
   }
 
-  @OnEvent('join')
+  @OnEvent('play')
   async on(args: string[], message: Message) {
     if (!message.member.permissions.has(PermissionFlagsBits.ManageChannels)) {
       return message.reply("You're not MANAGE_CHANNELS permission");
@@ -33,16 +26,9 @@ export class JoinSubCommand {
       return message.reply("You're not in any voice channel");
     }
 
-    const channelId = message.member.voice.channel.id;
-    const guildId = message.guild.id;
     const uri = args.join(' ');
-    const connection = this.playService.createConnection({
-      channelId: channelId,
-      guildId: guildId,
-      adapterCreator: message.guild.voiceAdapterCreator,
-      selfMute: false,
-      selfDeaf: false,
-    });
+    const connection = getVoiceConnection(message.guild.id)
+    // if(!connection) 
     await this.playService.play(
       message.guild,
       message.member.voice.channel,
