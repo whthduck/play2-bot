@@ -2,6 +2,16 @@ import { VoiceConnection } from '@discordjs/voice';
 import { Cache } from 'cache-manager';
 import { flatten, unflatten } from 'flat';
 
+export interface IDiscordStore {
+  joinVoiceChannel: {
+    channelId: string;
+    guildId: string;
+    selfMute: boolean;
+    selfDeaf: boolean;
+  };
+  createStream: { guildId: string; uri: string };
+}
+
 export class DiscordStore<T extends Cache> {
   channel: string;
   protected _connection?: VoiceConnection;

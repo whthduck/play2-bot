@@ -2,10 +2,9 @@ import {
   Handler,
   IA,
   InjectDiscordClient,
-  On,
   SubCommand,
 } from '@discord-nestjs/core';
-import { Client, Message, VoiceBasedChannel, VoiceChannel } from 'discord.js';
+import { Client, Message } from 'discord.js';
 import { OnEvent } from '@nestjs/event-emitter';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
 import { StoreService } from 'src/store/store.service';
@@ -37,19 +36,14 @@ export class RejoinSubCommand {
         );
         if (!channel.isVoiceBased()) throw new Error('NotVoiceChannel');
 
-        const connection = this.playService.createConnection({
-          channelId: channel.id,
-          guildId: channel['guild'].id,
-          adapterCreator: channel['guild'].voiceAdapterCreator,
-          selfMute: false,
-          selfDeaf: false,
-        });
-        await this.playService.play(
+        const player = await this.playService.createPlayer(
           channel['guild'],
           channel,
-          connection,
           createStream.uri,
         );
+        await player.attachStream();
+        await player.connectToChannel();
+        player.start();
       } catch (e) {
         this.logger.error({ err: e.message, stack: e.stack });
       }
